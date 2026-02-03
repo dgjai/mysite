@@ -1,27 +1,18 @@
-.cards > ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
+.card {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  max-width: 280px;
+  text-align: center;
 }
 
-.cards > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
-}
-
-.cards .cards-card-body {
-  margin: 16px;
-}
-
-.cards .cards-card-image {
-  line-height: 0;
-}
-
-.cards > ul > li img {
+.card-img {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.card p {
+  margin: 10px 0 0;
+  font-size: 14px;
 }
