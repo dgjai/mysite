@@ -1,0 +1,160 @@
+/* blocks/range/range.css */
+
+.range {
+  width: 100%;
+  padding: 70px 20px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* background like your screenshot */
+.range::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #b7e7ff 0%,
+    #e9d6ff 30%,
+    #ffd1e8 55%,
+    #e9ffd4 100%
+  );
+  opacity: 0.8;
+  z-index: 0;
+}
+
+.range > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Title */
+.range-title {
+  text-align: center;
+  font-size: 54px;
+  font-weight: 900;
+  margin: 0 0 45px;
+  letter-spacing: 0.5px;
+}
+
+.range-title .pink {
+  color: #ff2d87;
+}
+
+.range-title .brown {
+  color: #3b1c14;
+}
+
+/* Main carousel wrapper */
+.range-carousel {
+  position: relative;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+}
+
+/* Arrows */
+.range-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  font-size: 60px;
+  font-weight: 900;
+  color: #ff2d87;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 10;
+  transition: 0.2s ease;
+}
+
+.range-arrow:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.range-arrow.left {
+  left: -50px;
+}
+
+.range-arrow.right {
+  right: -50px;
+}
+
+/* Window and track */
+.range-window {
+  overflow: hidden;
+  width: 100%;
+}
+
+.range-track {
+  display: flex;
+  gap: 40px;
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+
+/* Card */
+.range-card {
+  flex: 0 0 320px;
+  text-align: center;
+}
+
+.range-card img,
+.range-card picture img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.range-card h3 {
+  margin: 18px 0 0;
+  font-size: 20px;
+  font-weight: 900;
+  color: #3b1c14;
+}
+
+/* responsive */
+@media (max-width: 1300px) {
+  .range-arrow.left {
+    left: 0px;
+  }
+  .range-arrow.right {
+    right: 0px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .range-title {
+    font-size: 38px;
+  }
+
+  .range-card {
+    flex: 0 0 260px;
+  }
+
+  .range-card img,
+  .range-card picture img {
+    height: 190px;
+  }
+}
+
+@media (max-width: 650px) {
+  .range {
+    padding: 55px 14px;
+  }
+
+  .range-title {
+    font-size: 30px;
+  }
+
+  .range-card {
+    flex: 0 0 220px;
+  }
+
+  .range-arrow {
+    font-size: 45px;
+  }
+}

@@ -7,11 +7,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* hero section */
+/* HERO wrapper */
 .carousel .hero {
   width: 100%;
   height: 520px;
-  background: linear-gradient(90deg, #ff4f87 0%, #ff8fb6 50%, #ffd0e1 100%);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -19,7 +18,7 @@
   justify-content: center;
 }
 
-/* track */
+/* Track */
 .carousel .hero-track {
   display: flex;
   width: 100%;
@@ -27,31 +26,56 @@
   transition: transform 0.6s ease;
 }
 
-/* slide */
+/* Slide */
 .carousel .hero-slide {
   min-width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
+/* ✅ DIFFERENT COLOR PER SLIDE */
+.carousel .hero-slide:nth-child(1) {
+  background: linear-gradient(90deg, #ff2d87 0%, #ff77b7 55%, #ffd2e4 100%);
+}
+.carousel .hero-slide:nth-child(2) {
+  background: linear-gradient(90deg, #ff4b2b 0%, #ff9068 60%, #ffe1d6 100%);
+}
+.carousel .hero-slide:nth-child(3) {
+  background: linear-gradient(90deg, #1fd1f9 0%, #b621fe 60%, #f0d7ff 100%);
+}
+.carousel .hero-slide:nth-child(4) {
+  background: linear-gradient(90deg, #00c853 0%, #7cffb0 60%, #e4fff1 100%);
+}
+.carousel .hero-slide:nth-child(5) {
+  background: linear-gradient(90deg, #f7971e 0%, #ffd200 60%, #fff3c7 100%);
+}
+
+/* Inner content */
 .carousel .hero-inner {
   text-align: center;
   color: #fff;
   padding: 20px;
+  max-width: 900px;
 }
 
+/* heading */
 .carousel .hero-inner h1 {
   font-size: 56px;
   font-weight: 900;
   margin: 0 0 12px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
 }
 
+/* subtitle */
 .carousel .hero-inner p {
   font-size: 16px;
-  opacity: 0.92;
+  opacity: 0.95;
   margin: 0 0 20px;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.16);
 }
 
 /* button */
@@ -61,15 +85,16 @@
   padding: 12px 28px;
   border-radius: 10px;
   font-weight: 900;
-  color: #ff4f87;
+  color: #ff2d87;
   cursor: pointer;
   letter-spacing: 1px;
   text-transform: uppercase;
+  transition: 0.2s ease;
 }
 
 .carousel .hero-btn:hover {
-  transform: translateY(-1px);
-  transition: 0.2s;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
 }
 
 /* arrows */
@@ -81,10 +106,15 @@
   background: transparent;
   font-size: 55px;
   font-weight: 900;
-  color: #ff4f87;
+  color: #ff2d87;
   cursor: pointer;
   padding: 10px;
   z-index: 10;
+  transition: 0.2s;
+}
+
+.carousel .hero-arrow:hover {
+  transform: translateY(-50%) scale(1.08);
 }
 
 .carousel .hero-arrow.left {
