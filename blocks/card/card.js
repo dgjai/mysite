@@ -1,59 +1,76 @@
-/* card.js */
+/* blocks/card/card.js */
 
 export default function decorate(block) {
-  // The structure you shared:
-  // .card
-  //   > div
-  //     > div   <-- this is the flex container we want
-  //        > div (each card)
-  const flexContainer = block.querySelector(":scope > div > div");
+  // Add heading
+  const title = document.createElement("h2");
+  title.className = "card-title";
+  title.textContent = "What’s New?";
+  block.prepend(title);
 
-  if (!flexContainer) return;
+  // ✅ Find the real wrapper that contains all cards
+  // Your HTML is: .card > div > div > div...
+  // We'll collect cards based on h3 existence (each card has h3 title)
+  const rawCards = [...block.querySelectorAll(":scope > div div")].filter((d) =>
+    d.querySelector("h3")
+  );
 
-  // 1) Add heading "What's New?" above card section (if not already present)
-  const existingHeading = block.closest("main")?.querySelector("h2, h1");
-  if (!existingHeading) {
-    const h2 = document.createElement("h2");
-    h2.textContent = "What’s New?";
-    block.parentElement.insertBefore(h2, block);
-  }
+  if (!rawCards.length) return;
 
-  // 2) Add ORDER NOW button for each card item
-  const items = [...flexContainer.children];
+  // Create slider container + track
+  const slider = document.createElement("div");
+  slider.className = "slider";
 
-  items.forEach((item) => {
-    // Avoid duplicates if reload
-    if (item.querySelector(".order-btn")) return;
+  const track = document.createElement("div");
+  track.className = "track";
 
+  // Build clean items
+  rawCards.forEach((c) => {
+    const img = c.querySelector("picture");
+    const h3 = c.querySelector("h3");
+    const p = c.querySelector("p:last-of-type");
+
+    const item = document.createElement("div");
+    item.className = "item";
+
+    if (img) item.appendChild(img);
+    if (h3) item.appendChild(h3);
+    if (p) item.appendChild(p);
+
+    // Button
     const btn = document.createElement("a");
     btn.href = "#";
     btn.className = "order-btn";
     btn.textContent = "ORDER NOW";
-
     item.appendChild(btn);
+
+    track.appendChild(item);
   });
 
-  // 3) Add arrows for horizontal scroll
-  const left = document.createElement("div");
-  left.className = "nav-arrow left";
-  left.textContent = "‹";
+  // Clear block and insert slider
+  block.textContent = "";
+  block.appendChild(title);
+  slider.appendChild(track);
+  block.appendChild(slider);
 
-  const right = document.createElement("div");
-  right.className = "nav-arrow right";
-  right.textContent = "›";
+  // Arrows
+  const left = document.createElement("button");
+  left.className = "arrow left";
+  left.innerHTML = "‹";
 
-  // Avoid duplicate arrows
-  if (!block.querySelector(".nav-arrow.left")) block.appendChild(left);
-  if (!block.querySelector(".nav-arrow.right")) block.appendChild(right);
+  const right = document.createElement("button");
+  right.className = "arrow right";
+  right.innerHTML = "›";
 
-  // Scroll logic
-  const scrollAmount = 360;
+  slider.appendChild(left);
+  slider.appendChild(right);
+
+  const step = 340;
 
   left.addEventListener("click", () => {
-    flexContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    track.scrollBy({ left: -step, behavior: "smooth" });
   });
 
   right.addEventListener("click", () => {
-    flexContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    track.scrollBy({ left: step, behavior: "smooth" });
   });
 }

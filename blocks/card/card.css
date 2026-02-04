@@ -1,143 +1,107 @@
-/* card.css */
+/* blocks/card/card.css */
 
-/* --- section wrapper --- */
 main .card {
-  padding: 40px 20px;
-}
-
-/* Heading */
-main h1, main h2 {
-  text-align: center;
-  font-size: 56px;
-  font-weight: 900;
-  margin: 10px 0 40px;
+  padding: 30px 20px;
   font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Card container (auto HTML: .card > div > div > div...) */
-main .card > div > div {
-  display: flex;
-  gap: 90px;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  padding: 10px 40px 30px;
-}
-
-/* Each card item */
-main .card > div > div > div {
-  min-width: 290px;
-  max-width: 290px;
-  text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Image */
-main .card picture,
-main .card img {
-  display: block;
-  margin: 0 auto;
-}
-
-main .card img {
-  width: 280px;
-  height: 170px;
-  object-fit: cover;
-  border-radius: 18px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+  position: relative;
 }
 
 /* Title */
-main .card h3 {
-  font-size: 40px;
+main .card .card-title {
+  font-size: 56px;
   font-weight: 900;
-  margin: 16px 0 6px;
-  line-height: 1.05;
+  text-align: center;
+  margin: 10px 0 25px;
 }
 
-/* remove underline if h3 contains link later */
-main .card h3 a {
-  text-decoration: none;
-  color: inherit;
+/* Slider container */
+main .card .slider {
+  position: relative;
+  max-width: 1250px;
+  margin: 0 auto;
 }
 
-/* Category text */
-main .card p {
+/* The horizontal track (we will add this class from JS) */
+main .card .track {
+  display: flex;
+  flex-wrap: nowrap;       /* ✅ one line only */
+  gap: 45px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 20px 70px;
+  scrollbar-width: none;
+}
+
+main .card .track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Each card item */
+main .card .item {
+  flex: 0 0 auto;
+  width: 260px;
+  text-align: center;
+}
+
+/* Image */
+main .card .item picture img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
+  margin: 0 auto 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+/* Heading */
+main .card .item h3 {
+  font-size: 22px;
+  font-weight: 900;
+  margin: 10px 0 4px;
+}
+
+/* Category */
+main .card .item p {
   margin: 0;
-  font-size: 18px;
-  opacity: 0.85;
+  font-size: 14px;
+  opacity: 0.75;
 }
 
-/* ORDER NOW button (inserted by JS) */
-main .card .order-btn {
+/* Button */
+main .card .item .order-btn {
   display: inline-block;
-  margin-top: 18px;
-  padding: 14px 34px;
-  background: #ff2b77;
+  margin-top: 14px;
+  padding: 10px 18px;
+  background: #ff4f87;
   color: #fff;
   text-decoration: none;
   font-weight: 800;
-  font-size: 16px;
-  border-radius: 0;
+  font-size: 12px;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
-main .card .order-btn:hover {
-  opacity: 0.92;
-  transform: translateY(-1px);
-  transition: 0.2s;
-}
-
 /* Arrows */
-main .card .nav-arrow {
+main .card .arrow {
   position: absolute;
-  top: 48%;
+  top: 55%;
   transform: translateY(-50%);
-  font-size: 64px;
-  font-weight: 900;
-  color: #ff2b77;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
   cursor: pointer;
-  user-select: none;
-  z-index: 5;
+  font-size: 42px;
+  font-weight: 900;
+  color: #ff4f87;
+  z-index: 99;
 }
 
-main .card .nav-arrow.left {
-  left: 30px;
+main .card .arrow.left {
+  left: 0;
 }
 
-main .card .nav-arrow.right {
-  right: 30px;
-}
-
-/* Make card section relative for arrows */
-main .card {
-  position: relative;
-}
-
-/* responsive */
-@media (max-width: 1200px) {
-  main .card > div > div {
-    gap: 40px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-  }
-
-  main .card > div > div::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  main h1, main h2 {
-    font-size: 42px;
-  }
-
-  main .card img {
-    width: 240px;
-    height: 150px;
-  }
-
-  main .card h3 {
-    font-size: 32px;
-  }
+main .card .arrow.right {
+  right: 0;
 }
