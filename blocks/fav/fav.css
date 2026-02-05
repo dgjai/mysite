@@ -1,120 +1,179 @@
 /* blocks/fav/fav.css */
 
-main .fav {
-  padding: 80px 20px;
+.fav {
+  padding: 70px 0 90px;
   background: #fff;
-  text-align: center;
 }
 
-main .fav h2 {
-  font-size: 56px;
+.fav h2,
+.fav .title {
+  text-align: center;
+  font-size: 72px;
   font-weight: 900;
-  margin: 0 0 50px;
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0 0 55px;
   color: #111;
 }
 
-/* Wrapper */
-main .fav .fav-wrapper {
+/* carousel wrapper */
+.fav .carousel {
   position: relative;
-  max-width: 1350px;
+  max-width: 1400px;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* Arrow buttons */
-main .fav .fav-arrow {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font-size: 42px;
-  line-height: 55px;
-  font-weight: 900;
-  color: #ff2f7d;
-  background: transparent;
-  user-select: none;
-}
-
-main .fav .fav-arrow:hover {
-  transform: scale(1.1);
-}
-
-/* Window */
-main .fav .fav-window {
-  overflow: hidden;
-  width: 100%;
-}
-
-/* Track */
-main .fav .fav-track {
-  display: flex;
-  transition: transform 0.5s ease;
-  will-change: transform;
-}
-
-/* Card */
-main .fav .fav-card {
-  flex: 0 0 33.333%;
-  padding: 0 35px;
+  padding: 0 90px;
   box-sizing: border-box;
 }
 
-main .fav .fav-img {
-  width: 100%;
-  height: 320px;
-  border-radius: 16px;
+/* visible area */
+.fav .c-window {
   overflow: hidden;
-  background: #f3f3f3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
 }
 
-main .fav .fav-img img {
+/* moving track */
+.fav .c-track {
+  display: flex;
+  gap: 90px;
+  transition: transform 0.55s ease;
+  will-change: transform;
+}
+
+/* card */
+.fav .fav-card {
+  flex: 0 0 320px;
+  text-align: center;
+}
+
+/* NO GREY BOX */
+.fav .fav-ph {
+  width: 320px;
+  height: 320px;
+  background: transparent;     /* ✅ removed */
+  border-radius: 0;           /* ✅ removed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;          /* ✅ allow hover pop */
+}
+
+/* image itself */
+.fav .fav-ph img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transition: transform 0.25s ease, filter 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 0;
 }
 
-main .fav .fav-title {
-  margin-top: 22px;
-  font-size: 34px;
+/* ✅ hover effect */
+.fav .fav-card:hover .fav-ph img {
+  transform: translateY(-10px) scale(1.05);
+  filter: drop-shadow(0px 18px 22px rgba(0, 0, 0, 0.18));
+}
+
+/* heading */
+.fav .fav-card h3 {
+  font-size: 40px;
   font-weight: 900;
-  color: #3c1f1f;
-  font-family: Arial, Helvetica, sans-serif;
+  color: #3a1f1b;
+  margin: 22px 0 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-main .fav .fav-btn {
-  margin-top: 16px;
+/* button */
+.fav .small-btn {
   background: #ff2f7d;
   color: #fff;
   border: none;
-  padding: 12px 28px;
-  font-weight: 900;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 0;
+  padding: 13px 34px;
+  font-size: 14px;
+  font-weight: 800;
   letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  main .fav h2 {
-    font-size: 42px;
+.fav .small-btn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+/* arrows */
+.fav .c-arrow {
+  position: absolute;
+  top: 46%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 60px;
+  font-weight: 900;
+  color: #ff2f7d;
+  z-index: 50;
+  line-height: 1;
+}
+
+.fav .c-arrow.left {
+  left: 25px;
+}
+
+.fav .c-arrow.right {
+  right: 25px;
+}
+
+.fav .c-window::-webkit-scrollbar {
+  display: none;
+}
+
+/* responsive */
+@media (max-width: 1100px) {
+  .fav h2,
+  .fav .title {
+    font-size: 55px;
   }
 
-  main .fav .fav-card {
-    flex: 0 0 50%;
+  .fav .carousel {
+    padding: 0 60px;
+  }
+
+  .fav .c-track {
+    gap: 50px;
+  }
+
+  .fav .fav-card {
+    flex-basis: 280px;
+  }
+
+  .fav .fav-ph {
+    width: 280px;
+    height: 280px;
+  }
+
+  .fav .fav-card h3 {
+    font-size: 32px;
   }
 }
 
 @media (max-width: 700px) {
-  main .fav .fav-card {
-    flex: 0 0 100%;
-    padding: 0 18px;
+  .fav .carousel {
+    padding: 0 40px;
+  }
+
+  .fav .fav-card {
+    flex-basis: 240px;
+  }
+
+  .fav .fav-ph {
+    width: 240px;
+    height: 240px;
+  }
+
+  .fav .fav-card h3 {
+    font-size: 28px;
+  }
+
+  .fav .c-arrow {
+    font-size: 48px;
   }
 }

@@ -1,111 +1,140 @@
-/* blocks/fav/fav.js */
+// blocks/fav/fav.js
 
 export default function decorate(block) {
-  // get all rows (each row = one fav item)
-  const rows = [...block.children];
+  // The incoming block is a table converted into div structure by AEM.
+  // We will transform it into:
+  // <section class="fav">
+  //   <h2>All Time Favorites</h2>
+  //   <div class="carousel">
+  //     <button ...left>
+  //     <div class="c-window">
+  //       <div class="c-track"> ...cards... </div>
+  //     </div>
+  //     <button ...right>
+  //   </div>
+  // </section>
 
-  // extract fav items
-  const items = rows.map((row) => {
+  block.classList.add("fav");
+
+  const title = block.querySelector("h2") || block.querySelector("h3");
+  if (!title) {
+    const h2 = document.createElement("h2");
+    h2.textContent = "All Time Favorites";
+    block.prepend(h2);
+  }
+
+  // collect rows -> create cards
+  const rows = [...block.querySelectorAll(":scope > div")];
+
+  const cards = [];
+  rows.forEach((row) => {
     const cols = [...row.children];
 
-    const img = cols[0]?.querySelector("img");
-    const title = cols[1]?.textContent?.trim() || "";
+    // Expecting 3 columns:
+    // col1 = image
+    // col2 = title
+    // col3 = button text
+    const img = cols[0]?.querySelector("picture, img");
+    const name = cols[1]?.textContent?.trim();
     const btnText = cols[2]?.textContent?.trim() || "ORDER NOW";
-    const btnLink = cols[3]?.querySelector("a")?.href || cols[3]?.textContent?.trim() || "#";
 
-    return { img, title, btnText, btnLink };
-  });
+    if (!img || !name) return;
 
-  // clean block HTML
-  block.textContent = "";
-
-  // Section title
-  const heading = document.createElement("h2");
-  heading.textContent = "All Time Favorites";
-  block.appendChild(heading);
-
-  // wrapper
-  const wrapper = document.createElement("div");
-  wrapper.className = "fav-wrapper";
-
-  // arrows
-  const prev = document.createElement("button");
-  prev.className = "fav-arrow fav-prev";
-  prev.innerHTML = "&#8249;";
-
-  const next = document.createElement("button");
-  next.className = "fav-arrow fav-next";
-  next.innerHTML = "&#8250;";
-
-  // window + track
-  const win = document.createElement("div");
-  win.className = "fav-window";
-
-  const track = document.createElement("div");
-  track.className = "fav-track";
-
-  // render cards
-  items.forEach((item) => {
     const card = document.createElement("div");
     card.className = "fav-card";
 
-    const imgWrap = document.createElement("div");
-    imgWrap.className = "fav-img";
+    const ph = document.createElement("div");
+    ph.className = "fav-ph";
 
-    if (item.img) imgWrap.appendChild(item.img);
+    // Ensure we have <img> (picture contains img)
+    const imgEl = img.tagName === "IMG" ? img : img.querySelector("img");
+    if (imgEl) ph.appendChild(imgEl);
 
-    const h3 = document.createElement("div");
-    h3.className = "fav-title";
-    h3.textContent = item.title;
+    const h3 = document.createElement("h3");
+    h3.textContent = name;
 
     const btn = document.createElement("button");
-    btn.className = "fav-btn";
-    btn.textContent = item.btnText;
-    btn.addEventListener("click", () => window.open(item.btnLink, "_blank"));
+    btn.className = "small-btn";
+    btn.textContent = btnText;
 
-    card.appendChild(imgWrap);
-    card.appendChild(h3);
-    card.appendChild(btn);
-
-    track.appendChild(card);
+    card.append(ph, h3, btn);
+    cards.push(card);
   });
 
-  win.appendChild(track);
-  wrapper.appendChild(prev);
-  wrapper.appendChild(win);
-  wrapper.appendChild(next);
+  // clean old table content except heading
+  const heading = block.querySelector("h2");
+  block.innerHTML = "";
+  if (heading) block.appendChild(heading);
 
-  block.appendChild(wrapper);
+  const carousel = document.createElement("div");
+  carousel.className = "carousel";
 
-  // slider logic
-  let current = 0;
+  const prev = document.createElement("button");
+  prev.className = "c-arrow left";
+  prev.id = "favPrev";
+  prev.innerHTML = "&#8249;"; // ‹
+
+  const next = document.createElement("button");
+  next.className = "c-arrow right";
+  next.id = "favNext";
+  next.innerHTML = "&#8250;"; // ›
+
+  const windowEl = document.createElement("div");
+  windowEl.className = "c-window";
+
+  const track = document.createElement("div");
+  track.className = "c-track fav-track";
+  track.id = "favTrack";
+
+  cards.forEach((c) => track.appendChild(c));
+  windowEl.appendChild(track);
+
+  carousel.append(prev, windowEl, next);
+  block.appendChild(carousel);
+
+  // ---- carousel logic ----
+  let index = 0;
+
+  function getCardWidth() {
+    const first = track.querySelector(".fav-card");
+    if (!first) return 0;
+    const style = getComputedStyle(track);
+    const gap = parseFloat(style.gap || "0");
+    return first.getBoundingClientRect().width + gap;
+  }
 
   function visibleCount() {
-    if (window.innerWidth <= 700) return 1;
-    if (window.innerWidth <= 1024) return 2;
-    return 3;
+    const first = track.querySelector(".fav-card");
+    if (!first) return 1;
+    const cardW = getCardWidth();
+    const w = windowEl.getBoundingClientRect().width;
+    return Math.max(1, Math.floor(w / cardW));
   }
 
   function update() {
-    const vc = visibleCount();
-    const cardWidth = win.clientWidth / vc;
-    track.style.transform = `translateX(-${current * cardWidth}px)`;
+    const total = track.children.length;
+    const vis = visibleCount();
+    const maxIndex = Math.max(0, total - vis);
+
+    if (index < 0) index = 0;
+    if (index > maxIndex) index = maxIndex;
+
+    const x = index * getCardWidth();
+    track.style.transform = `translateX(-${x}px)`;
   }
 
   prev.addEventListener("click", () => {
-    const vc = visibleCount();
-    const maxIndex = Math.max(0, items.length - vc);
-    current = current <= 0 ? maxIndex : current - 1;
+    index--;
     update();
   });
 
   next.addEventListener("click", () => {
-    const vc = visibleCount();
-    const maxIndex = Math.max(0, items.length - vc);
-    current = current >= maxIndex ? 0 : current + 1;
+    index++;
     update();
   });
 
   window.addEventListener("resize", update);
-  setTimeout(update, 50);
+
+  // initial paint
+  requestAnimationFrame(update);
 }
